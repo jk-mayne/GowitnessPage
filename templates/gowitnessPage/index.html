@@ -60,19 +60,19 @@ body {
 #myBtn:hover {
   background-color: red;
 }
-
-
 </style>
+
 
 <div class="row">
 {% for key, value in data.items %}
     <div class="column">
-        <a href="{{ value.1 }}" target="_blank">
-            <img src ="{{ value.2 }}"/>
+        <a href="{{ value|last }}" target="_blank">
+            <img src ="{{ value.0 }}"/>
         </a>
     </div>
 {% endfor %}
 </div>
+
 
 <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>
 <script>
