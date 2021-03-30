@@ -62,16 +62,36 @@ body {
 }
 </style>
 
-
 <div class="row">
-{% for key, value in data.items %}
-    <div class="column">
-        <a href="{{ value|last }}" target="_blank">
-            <img src ="{{ value.0 }}"/>
-        </a>
-    </div>
+
+{% for x in data %}
+  <div class="column">
+    <a href="{{ x.1|last }}" target="_blank">
+      <img src="{{ x.1.0 }}"/>
+    </a>
+  </div>
 {% endfor %}
 </div>
+
+
+<div class="pagination">
+  <span class="step-links">
+    {% if data.has_previous %}
+      <a href="?page=1">&laquo; first</a>
+      <a href="?page={{ data.previous_page_number }}">previous</a>
+    {% endif %}
+  <span class="current">
+    Page {{ data.number }} of {{ data.paginator.num_page }}.
+  </span>
+  {% if data.has_next %}
+    <a href="?page={{ data.next_page_number }}">next</a>
+    <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+  {% endif %}
+</span>
+</div>
+
+
+
 
 
 <button onclick="topFunction()" id="myBtn" title="Go to top">Top</button>

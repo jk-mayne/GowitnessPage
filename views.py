@@ -7,6 +7,7 @@ from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from pathlib import Path
 from base64 import b64encode
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 #from armory2.armory_main.included.utilities import get_urls
 
 # from armory2.
@@ -40,7 +41,24 @@ def index(request):
                     else:
                         data[p.id].append(p.service_name + '://' + str(ip.ip_address) + ':' + str(p.port_number))
 
-    return render(request, 'gowitnessPage/index.html', {'data': data, 'port_ids':port_ids})
+    #trying pagination stuffs
+    #data_list = range(1,1000)
+
+    
+    data_t = tuple(data.items())
+    #print(data_t)
+    paginator = Paginator(data_t, 20)
+    page = request.GET.get('page', 1)
+
+    #print(page)
+    #print(data_t)
+    try:
+        data2 = paginator.get_page(page)
+    except PageNotAnInteger:
+        data2 = paginator.get_page(1)
+    except EmptyPage:
+        data2 = paginator.get_page(paginator.num_pages)
+    return render(request, 'gowitnessPage/index.html', {'data': data2})   #, 'port_ids':port_ids})
 
 def get_ips(request, pkid):
     obj = get_object_or_404(CIDR, pk=pkid)
